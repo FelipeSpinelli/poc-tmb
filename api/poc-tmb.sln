@@ -5,6 +5,8 @@ VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tmb.OrderManagementSystem.Api", "Tmb.OrderManagementSystem.Api\Tmb.OrderManagementSystem.Api.csproj", "{01C33C77-EC90-4582-BBE5-0C3DE457375A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tmb.OrderManagementSystem.Core", "Tmb.OrderManagementSystem.Core\Tmb.OrderManagementSystem.Core.csproj", "{2A1E5BFC-49F5-48DF-8C5E-0559246401E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{01C33C77-EC90-4582-BBE5-0C3DE457375A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01C33C77-EC90-4582-BBE5-0C3DE457375A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01C33C77-EC90-4582-BBE5-0C3DE457375A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A1E5BFC-49F5-48DF-8C5E-0559246401E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A1E5BFC-49F5-48DF-8C5E-0559246401E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A1E5BFC-49F5-48DF-8C5E-0559246401E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A1E5BFC-49F5-48DF-8C5E-0559246401E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
