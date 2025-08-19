@@ -17,7 +17,11 @@ internal class OrderService : IOrderService
 
     public async Task<Result<Guid>> CreateOrderAsync(OrderCreationData orderCreationData, CancellationToken cancellationToken)
     {
-        var order = new Order(orderCreationData.Customer, orderCreationData.Product, orderCreationData.Price);
+        var order = new Order(
+            orderCreationData.Customer,
+            orderCreationData.Product,
+            orderCreationData.Price);
+
         var result = new Result<Guid>(order.Id);
         if (!order.IsValid)
         {
