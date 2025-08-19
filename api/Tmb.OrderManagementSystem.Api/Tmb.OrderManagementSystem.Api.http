@@ -1,0 +1,6 @@
+@Tmb.OrderManagementSystem.Api_HostAddress = http://localhost:5179
+
+GET {{Tmb.OrderManagementSystem.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
