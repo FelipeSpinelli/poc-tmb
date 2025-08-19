@@ -12,12 +12,7 @@ public static class OrderCreation
         public string Product { get; init; } = null!;
         public decimal Price { get; init; }
 
-        public OrderCreationData AsOrderCreationData() => new()
-        { 
-            Customer = Customer,
-            Product = Product,
-            Price = Price
-        };
+        public OrderCreationData AsOrderCreationData() => new(Customer, Product, Price);
     }
 
     internal static void AddOrderCreation(this WebApplication app)

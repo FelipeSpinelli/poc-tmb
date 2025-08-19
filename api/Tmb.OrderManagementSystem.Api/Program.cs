@@ -1,12 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
 using Tmb.OrderManagementSystem.Api.Endpoints;
+using Tmb.OrderManagementSystem.Core.Application.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.ConfigureApplication(builder.Configuration);
 
 var app = builder.Build();
 
@@ -19,7 +18,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.AddOrderCreation();
-
+app.MapEndpoints();
 
 app.Run();
