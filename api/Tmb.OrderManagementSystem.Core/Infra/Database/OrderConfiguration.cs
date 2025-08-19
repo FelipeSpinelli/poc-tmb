@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Tmb.OrderManagementSystem.Core.Domain;
 
 namespace Tmb.OrderManagementSystem.Core.Infra.Database;
-
 public class OrderConfiguration : IEntityTypeConfiguration<Order>
 {
     public void Configure(EntityTypeBuilder<Order> builder)

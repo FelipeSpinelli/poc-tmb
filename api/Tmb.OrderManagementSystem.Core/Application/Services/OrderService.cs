@@ -1,18 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Tmb.OrderManagementSystem.Core.Application.Models;
+﻿using Tmb.OrderManagementSystem.Core.Application.Models;
+using Tmb.OrderManagementSystem.Core.Application.Ports;
 using Tmb.OrderManagementSystem.Core.Application.Services.Abstractions;
 using Tmb.OrderManagementSystem.Core.Domain;
-using Tmb.OrderManagementSystem.Core.Infra.Database;
 
 namespace Tmb.OrderManagementSystem.Core.Application.Services;
 
 internal class OrderService : IOrderService
 {
-    private readonly TmbDbContext _dbContext;
+    private readonly IOrderRepository _repository;
+    private readonly IMessagingSender _busSender;
 
-    public OrderService(TmbDbContext dbContext)
+    public OrderService(IOrderRepository repository, IMessagingSender busSender)
     {
-        _dbContext = dbContext;
+        _repository = repository;
+        _busSender = busSender;
     }
 
     public async Task<Result<Guid>> CreateOrderAsync(OrderCreationData orderCreationData, CancellationToken cancellationToken)
@@ -37,27 +38,19 @@ internal class OrderService : IOrderService
             return result;
         }
 
-        await _dbContext.AddAsync(order, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _repository.InsertAsync(order, cancellationToken);
+        await _busSender.SendAsync(new OrderStatusChangingData(order.Id), cancellationToken);
 
         return result;
     }
 
     public Task<Order?> GetOrderByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        return _dbContext.Orders
-            .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        return _repository.GetOrderByIdAsync(id, cancellationToken);
     }
 
-    public async Task<IEnumerable<Order>> SearchOrdersAsync(SearchOrdersParameters searchParams, CancellationToken cancellationToken)
+    public Task<IEnumerable<Order>> SearchOrdersAsync(SearchOrdersParameters searchParams, CancellationToken cancellationToken)
     {
-        var orders =  await _dbContext.Orders
-            .Skip((int)searchParams.Offset)
-            .Take((int)searchParams.PageSize)
-            .AsNoTracking()
-            .ToListAsync(cancellationToken);
-
-        return orders;
+        return _repository.SearchOrdersAsync((int)searchParams.Offset, (int)searchParams.PageSize, cancellationToken);
     }
 }
