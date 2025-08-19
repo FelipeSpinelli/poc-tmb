@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Tmb.OrderManagementSystem.Api.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,11 +19,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/weatherforecast", () =>
-{
-    return new object();
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+app.AddOrderCreation();
+
 
 app.Run();
