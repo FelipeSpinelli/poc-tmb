@@ -7,4 +7,9 @@ public record OrderStatusChangingData
     public OrderStatusChangingData()
     {            
     }
-};
+
+    public OrderStatusChangingData(Guid orderId)
+    {
+        OrderId = orderId;
+    }
+}
