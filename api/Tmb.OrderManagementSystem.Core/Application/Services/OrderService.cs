@@ -5,7 +5,7 @@ using Tmb.OrderManagementSystem.Core.Domain;
 
 namespace Tmb.OrderManagementSystem.Core.Application.Services;
 
-internal class OrderService : IOrderService
+internal class OrderService : IOrderService, IMessagingHandler<OrderStatusChangingData>
 {
     private readonly IOrderRepository _repository;
     private readonly IMessagingSender _busSender;
@@ -42,6 +42,20 @@ internal class OrderService : IOrderService
         await _busSender.SendAsync(new OrderStatusChangingData(order.Id), cancellationToken);
 
         return result;
+    }
+
+    public async Task HandleAsync(OrderStatusChangingData obj, CancellationToken cancellationToken)
+    {
+        var order = await _repository.GetOrderByIdAsync(obj.OrderId, cancellationToken);
+        if (order is null)
+        {
+            return;
+        }
+
+        order.ChangeStatus();
+        await _repository.UpdateAsync(order, cancellationToken);
+
+        await _busSender.ScheduleAsync(obj, DateTimeOffset.UtcNow.AddSeconds(5), cancellationToken);
     }
 
     public Task<Order?> GetOrderByIdAsync(Guid id, CancellationToken cancellationToken)

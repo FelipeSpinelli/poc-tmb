@@ -7,6 +7,11 @@ public class OrderRepository : IOrderRepository
 {
     private readonly TmbDbContext _dbContext;
 
+    public OrderRepository(TmbDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
     public async Task InsertAsync(Order order, CancellationToken cancellationToken)
     {
         await _dbContext.AddAsync(order, cancellationToken);

@@ -1,5 +1,6 @@
 version: '3.9'
 
+name: poc-tmb-oms
 services:
   postgres:
     image: postgres:16
@@ -13,19 +14,56 @@ services:
       - "5432:5432"
     volumes:
       - ${POSTGRES_DATA}:/var/lib/postgresql/data
+    networks:
+      sb-emulator:
+        aliases:
+          - "postgres"
 
   api:
     build:
       context: ../api
-      dockerfile: ./Docker/Dockerfile
+      dockerfile: ./Docker/Dockerfile-Api
     container_name: poc-tmb-oms-api
     restart: always
     depends_on:
       - postgres
+      - emulator
     environment:
       ConnectionStrings__TmbOrderManagementSystemDb: "Host=postgres;Port=5432;Database=oms_tmb_poc;Username=postgres;Password=postgres"
+      ConnectionStrings__TmbOrderManagementSystemASB: "Endpoint=sb://servicebus-emulator;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
+      MessagingSettings__EnableSent: true
+      MessagingSettings__EnableReceive: false
+      MessagingSettings__ConnectionStringName: "TmbOrderManagementSystemASB"
+      MessagingSettings__QueueName: "queue.1"
     ports:
       - "${API_PORT}:8080"
+    networks:
+      sb-emulator:
+        aliases:
+          - "tmb-poc-api"
+
+  worker:
+    build:
+      context: ../api
+      dockerfile: ./Docker/Dockerfile-Worker
+    container_name: poc-tmb-oms-worker
+    restart: always
+    depends_on:
+      - postgres
+      - emulator
+    environment:
+      ConnectionStrings__TmbOrderManagementSystemDb: "Host=postgres;Port=5432;Database=oms_tmb_poc;Username=postgres;Password=postgres"
+      ConnectionStrings__TmbOrderManagementSystemASB: "Endpoint=sb://servicebus-emulator;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
+      MessagingSettings__EnableSent: true
+      MessagingSettings__EnableReceive: true
+      MessagingSettings__ConnectionStringName: "TmbOrderManagementSystemASB"
+      MessagingSettings__QueueName: "queue.1"
+    ports:
+      - "${WORKER_PORT}:8080"
+    networks:
+      sb-emulator:
+        aliases:
+          - "tmb-poc-worker"
 
   emulator:
     container_name: "servicebus-emulator"
