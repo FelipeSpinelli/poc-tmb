@@ -7,6 +7,35 @@ namespace Tmb.OrderManagementSystem.Api.Endpoints;
 
 public static class OrderReading
 {
+    public class PaginationRequest
+    {
+        [FromQuery(Name = "pageNumber")]
+        public int? PageNumber { get; set; }
+
+        [FromQuery(Name = "pageSize")]
+        public int? PageSize { get; set; }
+
+        public uint GetPageNumber()
+        {
+            if (!PageNumber.HasValue || PageNumber.Value < 1)
+            {
+                return 1;
+            }
+
+            return (uint)PageNumber.Value;
+        }
+
+        public uint GetPageSize()
+        {
+            if (!PageSize.HasValue || PageSize.Value < 1)
+            {
+                return 10;
+            }
+
+            return (uint)PageSize.Value;
+        }
+    }
+
     public class Response
     {
         public string Id { get; init; } = null!;
@@ -22,7 +51,7 @@ public static class OrderReading
             Cliente = order.Customer,
             Produto = order.Product,
             Valor = order.Price,
-            DataCriacao = order.CreationDate.ToString("dd/MM/yyyy"),
+            DataCriacao = order.CreationDate.ToString("yyyy-MM-dd"),
             Status = order.Status switch
             {
                 OrderStatus.Pending => "Pendente",
@@ -53,12 +82,12 @@ public static class OrderReading
 
     internal static void AddListOrders(this WebApplication app)
     {
-        app.MapGet("/orders", async ([FromServices] IOrderService orderService, [FromQuery(Name = "page_number")] uint pageNumber, [FromQuery(Name = "page_size")] uint pageSize, CancellationToken cancellationToken) =>
+        app.MapGet("/orders", async ([FromServices] IOrderService orderService, [AsParameters] PaginationRequest pagination, CancellationToken cancellationToken) =>
         {
             var parameters = new SearchOrdersParameters
             {
-                PageNumber = pageNumber,
-                PageSize = pageSize
+                PageNumber = pagination.GetPageNumber(),
+                PageSize = pagination.GetPageSize()
             };
             var orders = await orderService.SearchOrdersAsync(parameters, cancellationToken);
             var response = orders.Select(x => Response.FromOrder(x));
