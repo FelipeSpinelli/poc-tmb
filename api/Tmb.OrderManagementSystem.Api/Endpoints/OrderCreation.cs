@@ -8,11 +8,11 @@ public static class OrderCreation
 {
     public class Request
     {
-        public string Customer { get; init; } = null!;
-        public string Product { get; init; } = null!;
-        public decimal Price { get; init; }
+        public string Cliente { get; init; } = null!;
+        public string Produto { get; init; } = null!;
+        public decimal Valor { get; init; }
 
-        public OrderCreationData AsOrderCreationData() => new(Customer, Product, Price);
+        public OrderCreationData AsOrderCreationData() => new(Cliente, Produto, Valor);
     }
 
     internal static void AddOrderCreation(this WebApplication app)

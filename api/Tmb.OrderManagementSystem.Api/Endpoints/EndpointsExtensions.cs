@@ -5,5 +5,7 @@ public static class EndpointsExtensions
     public static void MapEndpoints(this WebApplication app)
     {
         app.AddOrderCreation();
+        app.AddGetOrderById();
+        app.AddListOrders();
     }
 }
