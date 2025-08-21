@@ -21,14 +21,14 @@ internal class AzureServiceBusAdapter : IMessagingSender, IMessagingReceiver
     {
         _serviceProvider = serviceProvider;
         _serviceBusSender = settings.EnableSent ? serviceBusClient.CreateSender(settings.QueueName) : default;
-        _serviceBusProcessor = settings.EnableReceive ? serviceBusClient.CreateProcessor(settings.QueueName) : default;
         _logger = logger;
 
         if (!settings.EnableReceive)
         {
             return;
         }
-
+        
+        _serviceBusProcessor = serviceBusClient.CreateProcessor(settings.QueueName);
         _serviceBusProcessor!.ProcessMessageAsync += MessageHandler;
         _serviceBusProcessor!.ProcessErrorAsync += ErrorHandler;
     }
