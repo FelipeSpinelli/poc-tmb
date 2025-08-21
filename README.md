@@ -120,4 +120,3 @@ A solução foi organizada em múltiplos projetos para manter o baixo acoplament
 * `GET /orders/{id}` → Retorna detalhes de um pedido específico
 
 ---
-* Testes automatizados (unitários e de integração).
