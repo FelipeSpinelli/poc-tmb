@@ -113,26 +113,11 @@ A solução foi organizada em múltiplos projetos para manter o baixo acoplament
 
 ---
 
-## 📌 Endpoints da API
+## Endpoints da API
 
 * `POST /orders` → Cria um pedido
 * `GET /orders` → Lista pedidos (com paginação: `?pageNumber={pageNumber}&pageSize={pageSize}`)
 * `GET /orders/{id}` → Retorna detalhes de um pedido específico
 
 ---
-
-## ✅ Critérios Implementados
-
-* Arquitetura em camadas (Application, Domain, Infra)
-* API Minimal em .NET 8
-* Worker assíncrono com Azure Service Bus
-* Persistência com PostgreSQL + EF Core
-* Frontend em React + Tailwind conectado à API
-* Docker Compose para execução completa do ambiente
-
----
-
-## 🚀 Próximos Passos (Possíveis Melhorias)
-
-* Implementar SignalR para notificações em tempo real quando o status do pedido mudar.
 * Testes automatizados (unitários e de integração).
