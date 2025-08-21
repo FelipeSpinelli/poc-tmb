@@ -55,6 +55,11 @@ internal class OrderService : IOrderService, IMessagingHandler<OrderStatusChangi
         order.ChangeStatus();
         await _repository.UpdateAsync(order, cancellationToken);
 
+        if (order.Status == OrderStatus.Finished)
+        {
+            return;
+        }
+
         await _busSender.ScheduleAsync(obj, DateTimeOffset.UtcNow.AddSeconds(5), cancellationToken);
     }
 
