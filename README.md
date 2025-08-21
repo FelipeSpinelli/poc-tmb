@@ -40,7 +40,7 @@ ACCEPT_EULA="Y"
 MSSQL_SA_PASSWORD=""
 
 # porta onde o frontend (React) ficará disponível
-WEBAPP_PORT=5173
+WEBAPP_PORT=9000
 ```
 ---
 
