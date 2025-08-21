@@ -64,6 +64,18 @@ Isso vai levantar:
 * **Worker (.NET 8 BackgroundService)** → processa mensagens do Azure Service Bus
 * **WebApp (React + Tailwind)** → `http://localhost:5173`
 
+#### Criação das tabelas do BD
+Uma vez que o banco de dados esteja rodando, é necessário criar as tabelas, para que a aplicação seja executada corretamente.
+
+Considerando que esteja na raiz do repositório, execute o comando abaixo:
+```bash
+dotnet tool install --global dotnet-ef
+
+dotnet ef database update \
+  --project ./api/Tmb.OrderManagementSystem.Core \
+  --startup-project ./api/Tmb.OrderManagementSystem.Api
+```
+
 Para parar os serviços:
 
 ```bash
