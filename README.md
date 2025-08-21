@@ -136,4 +136,3 @@ A solução foi organizada em múltiplos projetos para manter o baixo acoplament
 
 * Implementar SignalR para notificações em tempo real quando o status do pedido mudar.
 * Testes automatizados (unitários e de integração).
-```
